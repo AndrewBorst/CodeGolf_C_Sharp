@@ -1,81 +1,41 @@
-﻿class Program
+﻿static string CodeGolf1Andy(string W)
+
+{
+    var words = W.Split('\n');
+    var rot13Words = new List<string>();
+
+    foreach (var word in words)
+    {
+        var transformedWord = string.Empty;
+        foreach (var c in word)
+        {
+            if (c >= 'a' && c <= 'z')
+            {
+                transformedWord += (char)((c - 'a' + 13) % 26 + 'a');
+            }
+        }
+        if (words.Contains(transformedWord))
+        {
+            rot13Words.Add(transformedWord);
+        }
+    }
+
+    var uniqueWords = rot13Words.Select(w => w.ToLower()).Distinct().ToList();
+    uniqueWords.Sort();
+    return string.Join("\n", uniqueWords);
+}
+
+static string CleanList(string s)
+{
+    var words = s.ToLower().Split('\n').Distinct().ToList();
+    words.Sort();
+    return string.Join("\n", words);
+}
+
+static List<Test> Tests()
 {
 
-    static void Main(string[] args)
-    {
-        const int timerCount = 1111;
-        var tests = Tests();
-        var stopwatch = new System.Diagnostics.Stopwatch();
-
-        foreach (var test in tests)
-        {
-            var result = CodeGolf1AndyBorst(test.Input);
-            if (result == test.Expect)
-            {
-                Console.WriteLine("Test passed.");
-            }
-            else
-            {
-                Console.WriteLine("Test failed.");
-                Console.WriteLine($"Expected: {test.Expect}");
-                Console.WriteLine($"Got: {result}");
-            }
-        }
-
-        double totalElapsedTime = 0;
-        for (int i = 0; i < timerCount; i++)
-        {
-            stopwatch.Start();
-            foreach (var test in tests)
-            {
-                var result = CodeGolf1AndyBorst(test.Input);
-            }
-            stopwatch.Stop();
-            totalElapsedTime += stopwatch.Elapsed.TotalSeconds;
-            stopwatch.Reset();
-        }
-        double averageTime = totalElapsedTime / timerCount;
-        Console.WriteLine($"Average time: {averageTime} seconds");
-    }
-
-
-    static string CodeGolf1AndyBorst(string W)
-    {
-        var words = W.Split('\n');
-        var rot13Words = new List<string>();
-
-        foreach (var word in words)
-        {
-            var transformedWord = string.Empty;
-            foreach (var c in word)
-            {
-                if (c >= 'a' && c <= 'z')
-                {
-                    transformedWord += (char)((c - 'a' + 13) % 26 + 'a');
-                }
-            }
-            if (words.Contains(transformedWord))
-            {
-                rot13Words.Add(transformedWord);
-            }
-        }
-
-        var uniqueWords = rot13Words.Select(w => w.ToLower()).Distinct().ToList();
-        uniqueWords.Sort();
-        return string.Join("\n", uniqueWords);
-    }
-
-    static string CleanList(string s)
-    {
-        var words = s.ToLower().Split('\n').Distinct().ToList();
-        words.Sort();
-        return string.Join("\n", words);
-    }
-
-    static List<Test> Tests()
-    {
-
-        return new List<Test>
+    return new List<Test>
         {
             new Test
             {
@@ -89,12 +49,47 @@
             }
         };
 
-    }
-
-    class Test
-    {
-        public string Input { get; set; } = string.Empty;
-        public string Expect { get; set; } = string.Empty;
-    }
-
 }
+
+/* Main method */
+const int timerCount = 1111;
+var tests = Tests();
+var stopwatch = new System.Diagnostics.Stopwatch();
+
+foreach (var test in tests)
+{
+    var result = CodeGolf1Andy(test.Input);
+    if (result == test.Expect)
+    {
+        Console.WriteLine("Test passed.");
+    }
+    else
+    {
+        Console.WriteLine("Test failed.");
+        Console.WriteLine($"Expected: {test.Expect}");
+        Console.WriteLine($"Got: {result}");
+    }
+}
+
+double totalElapsedTime = 0;
+for (int i = 0; i < timerCount; i++)
+{
+    stopwatch.Start();
+    foreach (var test in tests)
+    {
+        var result = CodeGolf1Andy(test.Input);
+    }
+    stopwatch.Stop();
+    totalElapsedTime += stopwatch.Elapsed.TotalSeconds;
+    stopwatch.Reset();
+}
+double averageTime = totalElapsedTime / timerCount;
+Console.WriteLine($"Average time: {averageTime} seconds");
+
+
+class Test
+{
+    public string Input { get; set; } = string.Empty;
+    public string Expect { get; set; } = string.Empty;
+}
+
