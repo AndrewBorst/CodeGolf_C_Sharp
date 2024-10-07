@@ -78,13 +78,14 @@ for (int i = 0; i < timerCount; i++)
     foreach (var test in tests)
     {
         var result = CodeGolf1Andy(test.Input);
+        // var expect = CodeGolf1Andy(test.Expect);
     }
     stopwatch.Stop();
-    totalElapsedTime += stopwatch.Elapsed.TotalSeconds;
+    totalElapsedTime += stopwatch.Elapsed.TotalMilliseconds;
     stopwatch.Reset();
 }
 double averageTime = totalElapsedTime / timerCount;
-Console.WriteLine($"Average time: {averageTime} seconds");
+Console.WriteLine($"Average time: {averageTime:F2} ms");
 
 
 class Test
